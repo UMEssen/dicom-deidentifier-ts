@@ -5,11 +5,13 @@
   "author": "Nicolas Kamzol <nicolas.kamzol@uk-essen.de>",
   "license": "MIT",
   "private": false,
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "mocha --require ts-node/register test/specs/**/*.spec.ts",
+    "test": "ts-mocha -p tsconfig.json test/specs/**/*.spec.ts",
     "build": "tsc",
     "prepare": "npm run build"
   },
@@ -17,11 +19,13 @@
     "@types/node": "^14.14.20",
     "crypto-js": "^4.0.0",
     "dicom-parser": "^1.8.7",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "ts-mocha": "^8.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
     "@types/crypto-js": "^4.0.1",
+    "@types/expect": "^24.3.0",
     "@types/mocha": "^8.2.0",
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
