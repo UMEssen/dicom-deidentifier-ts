@@ -1,6 +1,6 @@
 {
   "name": "@ship/dicom-deidentifier",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DICOM de-identification library for Typescript",
   "author": "Nicolas Kamzol <nicolas.kamzol@uk-essen.de>",
   "license": "MIT",
