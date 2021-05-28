@@ -1,5 +1,5 @@
 {
-  "name": "@ship/dicom-deidentifier",
+  "name": "@umessen/dicom-deidentifier",
   "version": "0.1.1",
   "description": "DICOM de-identification library for Typescript",
   "author": "Nicolas Kamzol <nicolas.kamzol@uk-essen.de>",
