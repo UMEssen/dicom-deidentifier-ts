@@ -7,9 +7,9 @@
 ### Installing
 
 ```shell
-npm install @ship/dicom-deidentifier
+npm install @umessen/dicom-deidentifier
 
-yarn add @ship/dicom-deidentifier
+yarn add @umessen/dicom-deidentifier
 ```
 
 ### Example usage
