@@ -6,6 +6,10 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup timezone
+        uses: zcong1993/setup-timezone@master
+        with:
+          timezone: Europe/Berlin
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
