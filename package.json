@@ -1,6 +1,6 @@
 {
   "name": "@umessen/dicom-deidentifier",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "DICOM de-identification library for Typescript",
   "author": "Nicolas Kamzol <nicolas.kamzol@uk-essen.de>",
   "repository": {
