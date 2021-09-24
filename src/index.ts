@@ -24,6 +24,14 @@ export {
 
 export { isInlineBinaryVr, isIntegerVr, isTemporalVr } from './utils/dicomElement';
 
-export { addElement, updateElement, deleteElement, ensurePadding, toBytes, updateByteArray, updateElementOffsets } from './utils/dicomWriter';
+export {
+  addElement,
+  updateElement,
+  deleteElement,
+  ensurePadding,
+  toBytes,
+  updateByteArray,
+  updateElementOffsets,
+} from './utils/dicomWriter';
 export { toUid } from './utils/uid';
 export { formatDate, parseDate } from './utils/temporal';

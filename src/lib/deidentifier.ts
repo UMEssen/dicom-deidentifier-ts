@@ -25,7 +25,7 @@ export const oddGroupDeidentifier: Deidentifier = parameters => ({
   matches: intTag => (intTag >> 16) % 2 == 1,
 });
 
-const json = (ProfileAttributesJson as unknown) as ConfidentialityProfileAttribute[];
+const json = ProfileAttributesJson as unknown as ConfidentialityProfileAttribute[];
 
 export const deidentifiers: DeidentificationMatcher[] = json.map(profile => {
   const [group, element] = deconstructDicomTag(profile.Tag);

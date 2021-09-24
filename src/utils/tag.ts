@@ -22,16 +22,18 @@ export const jsToDicomFormat = (tag: string): string | null => {
   return `(${group},${element})`;
 };
 
-const deconstructTag = (regex: RegExp) => (tag: string): TagParts => {
-  const matches = regex.exec(tag);
+const deconstructTag =
+  (regex: RegExp) =>
+  (tag: string): TagParts => {
+    const matches = regex.exec(tag);
 
-  if (matches !== null && matches.length === 3) {
-    const [, group, element] = matches;
-    return [group, element];
-  } else {
-    return null;
-  }
-};
+    if (matches !== null && matches.length === 3) {
+      const [, group, element] = matches;
+      return [group, element];
+    } else {
+      return null;
+    }
+  };
 
 export const deconstructDicomTag: TagDeconstructor = deconstructTag(/\((\w{4}),(\w{4})\)/i);
 export const deconstructJsTag: TagDeconstructor = deconstructTag(/x(\w{4})(\w{4})/i);

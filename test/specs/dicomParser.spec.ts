@@ -1,20 +1,20 @@
 import * as moment from 'moment';
 import { expect } from 'chai';
-import {readFileSync, writeFileSync} from 'fs';
+import { readFileSync } from 'fs';
 import { DataSet as DicomDataset, parseDicom } from 'dicom-parser';
 import {
+  RetainDeviceIdentOption,
+  RetainLongModifDatesOption,
+  addElement,
   deidentify,
   ensurePadding,
   formatDate,
   isTemporalVr,
   parseDate,
-  RetainDeviceIdentOption,
-  RetainLongModifDatesOption,
   toBytes,
   updateElement,
 } from '../../src';
 import { DeidentifyOptions } from '../../src/types';
-import {addElement} from "../../src/utils/dicomWriter";
 
 // SETUP AND UTILS
 const dicomFile = readFileSync('test/resources/test01.dcm');
@@ -123,14 +123,13 @@ describe('deidentify', () => {
     expect(dataset.string('x0020000d')).to.equal('2.25.249548334295158846970995512124162104924');
 
     // Custom tags
-    expect(dataset.string("xffffabcd")).to.equal(undefined);
-    expect(dataset.string("xffffabce")).to.equal(undefined);
+    expect(dataset.string('xffffabcd')).to.equal(undefined);
+    expect(dataset.string('xffffabce')).to.equal(undefined);
 
-    addElement({dataset, tag: 'xffffabcd', vr: "SH", value: ensurePadding(toBytes("Foo")), isLittleEndian: false})
-    addElement({dataset, tag: 'xffffabce', vr: "SH", value: ensurePadding(toBytes("Bar")), isLittleEndian: false})
+    addElement({ dataset, tag: 'xffffabcd', vr: 'SH', value: ensurePadding(toBytes('Foo')), isLittleEndian: false });
+    addElement({ dataset, tag: 'xffffabce', vr: 'SH', value: ensurePadding(toBytes('Bar')), isLittleEndian: false });
 
-    expect(dataset.string("xffffabce")).to.equal('Bar');
-    expect(dataset.string("xffffabcd")).to.equal('Foo');
-
+    expect(dataset.string('xffffabce')).to.equal('Bar');
+    expect(dataset.string('xffffabcd')).to.equal('Foo');
   });
 });
