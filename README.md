@@ -37,7 +37,8 @@ const options: DeidentifyOptions = {
       return true;
     }
   ],
-  keep: ["x00101040"] // keep PatientAddress (0010,1040) and skip all handlers for this tag 
+  keep: ["x00101040"], // keep PatientAddress (0010,1040) and skip all handlers for this tag
+  vrLookup: defaultVrLookup // Required for transfer syntaxes with implicit VRs  
 };
 
 deidentify(dataset, options)

@@ -24,6 +24,17 @@ export {
 
 export { isInlineBinaryVr, isIntegerVr, isTemporalVr } from './utils/dicomElement';
 
-export { updateElement, deleteElement, ensurePadding, toBytes, updateByteArray, updateElementOffsets } from './utils/dicomWriter';
+export {
+  addElement,
+  updateElement,
+  deleteElement,
+  ensurePadding,
+  toBytes,
+  updateByteArray,
+  updateElementOffsets,
+} from './utils/dicomWriter';
 export { toUid } from './utils/uid';
 export { formatDate, parseDate } from './utils/temporal';
+
+export { default as VR } from './types/VR';
+export { default as defaultVrLookup, VR_LOOKUP_TABLE } from './lib/vrLookup';

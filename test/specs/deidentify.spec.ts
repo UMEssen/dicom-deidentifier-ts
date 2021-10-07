@@ -3,13 +3,14 @@ import { expect } from 'chai';
 import { readFileSync } from 'fs';
 import { DataSet as DicomDataset, parseDicom } from 'dicom-parser';
 import {
+  RetainDeviceIdentOption,
+  RetainLongModifDatesOption,
+  addElement,
   deidentify,
   ensurePadding,
   formatDate,
   isTemporalVr,
   parseDate,
-  RetainDeviceIdentOption,
-  RetainLongModifDatesOption,
   toBytes,
   updateElement,
 } from '../../src';
@@ -108,7 +109,7 @@ describe('deidentify', () => {
     console.timeEnd('deidentify');
 
     printSummary(dataset);
-    // writeFileSync('test/resources/test01-deidentified.dcm', dataset.byteArray);
+    //writeFileSync('test/resources/test01-deidentified.dcm', dataset.byteArray);
 
     // StudyTime
     expect(dataset.string('x00080030')).to.equal('130000.000000');
@@ -120,5 +121,15 @@ describe('deidentify', () => {
     expect(dataset.string('x00100010')).to.equal('JOHN^DOE');
     // StudyInstanceUID
     expect(dataset.string('x0020000d')).to.equal('2.25.249548334295158846970995512124162104924');
+
+    // Custom tags
+    expect(dataset.string('xffffabcd')).to.equal(undefined);
+    expect(dataset.string('xffffabce')).to.equal(undefined);
+
+    addElement({ dataset, tag: 'xffffabcd', vr: 'SH', value: ensurePadding(toBytes('Foo')), isLittleEndian: false });
+    addElement({ dataset, tag: 'xffffabce', vr: 'SH', value: ensurePadding(toBytes('Bar')), isLittleEndian: false });
+
+    expect(dataset.string('xffffabce')).to.equal('Bar');
+    expect(dataset.string('xffffabcd')).to.equal('Foo');
   });
 });

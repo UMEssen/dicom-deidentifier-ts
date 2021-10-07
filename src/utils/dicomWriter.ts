@@ -1,6 +1,7 @@
 import { DataSet as DicomDataset, Element as DicomElement } from 'dicom-parser';
 import { convert, converterInt16, converterInt32 } from './converters';
 import DeidentificationContext from '../types/DeidentificationContext';
+import { deconstructJsTag } from './tag';
 
 export const toBytes = (text: string, littleEndian: boolean = false): number[] => {
   let chars = text.split('');
@@ -104,5 +105,54 @@ export const deleteElement = (dataset: DicomDataset, tag: string) => {
     if (element.dataOffset > dataOffset) {
       element.dataOffset = element.dataOffset - length;
     }
+  });
+};
+
+type AddElementOptions = {
+  dataset: DicomDataset;
+  tag: string;
+  vr: string;
+  value: number[];
+  isLittleEndian: boolean;
+};
+
+export const addElement = ({ dataset, tag, vr, value, isLittleEndian }: AddElementOptions) => {
+  const [tagGroup, tagElement] = deconstructJsTag(tag);
+  const encodedTag = [
+    parseInt(tagGroup.slice(0, 2), 16),
+    parseInt(tagGroup.slice(2, 4), 16),
+    parseInt(tagElement.slice(0, 2), 16),
+    parseInt(tagElement.slice(2, 4), 16),
+  ];
+
+  const elementLength = 4 + 2 + 2 + value.length;
+  const offset = dataset.byteArray.length;
+  const updatedByteArray = new Uint8Array(offset + elementLength);
+  const element = new Uint8Array(elementLength);
+
+  const lengthField = getByteLength(vr);
+  const converter = lengthField === 16 ? converterInt16 : converterInt32;
+  const encodedLength = convert(value.length, converter, isLittleEndian);
+
+  element.set(encodedTag, 0);
+  element.set(toBytes(vr, isLittleEndian), 4);
+  element.set(encodedLength, 4 + 2);
+  element.set(
+    Array.from({ length: value.length }, (_, i) => value[i]),
+    4 + 2 + 2,
+  );
+
+  updatedByteArray.set(dataset.byteArray, 0);
+  updatedByteArray.set(element, offset);
+
+  dataset.byteArray = updatedByteArray;
+
+  Object.assign(dataset.elements, {
+    [tag]: {
+      tag: tag,
+      vr: vr,
+      dataOffset: offset + 8,
+      length: value.length,
+    } as DicomElement,
   });
 };
