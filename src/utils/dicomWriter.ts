@@ -47,7 +47,7 @@ export const updateByteArray = (value: number[], element: DicomElement, context:
   const rightPart = context.dataset.byteArray.slice(element.dataOffset + element.length, context.dataset.byteArray.length);
   const newContentArray = Array.from({ length: value.length }, (_, i) => value[i]);
 
-  const lengthField = getByteLength(element.vr);
+  const lengthField = context.isImplicit ? 32 : getByteLength(element.vr);
   const converter = lengthField === 16 ? converterInt16 : converterInt32;
   leftPart.set(convert(value.length, converter, context.isLittleEndian), leftPart.length - lengthField / 8);
 
@@ -86,8 +86,8 @@ const getByteLength = (vr: string): 16 | 32 => {
   return vr16bit.includes(vr) ? 16 : 32;
 };
 
-export const deleteElement = (dataset: DicomDataset, tag: string) => {
-  const is32bit = getByteLength(dataset.elements[tag].vr) === 32;
+export const deleteElement = (dataset: DicomDataset, tag: string, context: DeidentificationContext) => {
+  const is32bit = context.isImplicit || getByteLength(dataset.elements[tag].vr) === 32;
   const { dataOffset, length } = dataset.elements[tag];
 
   const leftPart = dataset.byteArray.slice(0, dataOffset);

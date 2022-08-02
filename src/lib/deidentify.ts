@@ -4,6 +4,7 @@ import cleaningFunctions from './cleaningFunctions';
 import { BasicProfile } from './profileOptions';
 import { deconstructJsTag, getIntTag } from '../utils/tag';
 import { defaultDateShiftFunction, defaultTimeShiftFunction } from './temporalShiftFunctions';
+import { defaultVrLookup } from '../index';
 import { deidentifiers } from './deidentifier';
 
 import DeidentificationContext from '../types/DeidentificationContext';
@@ -35,10 +36,13 @@ const execute = (context: DeidentificationContext) => async (element: DicomEleme
       BasicProfile,
     );
 
+    const isHeader = element.tag <= 'x0002ffff';
     cleaningFunctions[profileOption(deidentifier)](element, {
       ...context,
-      // Header must be encoded in Little Endian according to the DICOM specification
-      isLittleEndian: element.tag <= 'x0002ffff' ? true : context.isLittleEndian,
+      // Header must be encoded in Little Endian with explicit VRs
+      // (See 7.1 DICOM File Meta Information)
+      isLittleEndian: isHeader ? true : context.isLittleEndian,
+      isImplicit: isHeader ? false : context.isImplicit,
     });
   }
 };
@@ -60,10 +64,12 @@ const execute = (context: DeidentificationContext) => async (element: DicomEleme
  */
 const deidentify = async (dataset: DicomDataset, options: DeidentifyOptions): Promise<DicomDataset> => {
   const isLittleEndian = dataset.string('x00020010') !== '1.2.840.10008.1.2.2';
+  const isImplicit = dataset.elements[0]?.vr === undefined;
 
   const mergedOptions: DeidentifyOptions = {
     dateShiftFunction: defaultDateShiftFunction,
     timeShiftFunction: defaultTimeShiftFunction,
+    vrLookup: isImplicit && options.vrLookup == undefined ? defaultVrLookup : undefined,
     dummies: {
       default: 'removed',
       lookup: {},
@@ -78,6 +84,7 @@ const deidentify = async (dataset: DicomDataset, options: DeidentifyOptions): Pr
         ...mergedOptions,
         dataset,
         isLittleEndian,
+        isImplicit,
       }),
     ),
   );
