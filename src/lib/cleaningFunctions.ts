@@ -16,7 +16,7 @@ import ActionCode from '../types/ActionCode';
 import CleaningFunction from '../types/CleaningFunction';
 
 export const xCleanFunction: CleaningFunction = (element, context) => {
-  deleteElement(context.dataset, element.tag);
+  deleteElement(context.dataset, element.tag, context);
   return true;
 };
 
@@ -25,7 +25,7 @@ export const cCleanFunction: CleaningFunction = (element, context) => {
   const { dataset, referenceDate, dateShiftFunction, dummies } = context;
 
   if (vr === 'SQ') {
-    deleteElement(dataset, tag);
+    deleteElement(dataset, tag, context);
   } else if (isTemporalVr(vr)) {
     const date = dateShiftFunction(referenceDate)(parseDate(dataset.string(tag), vr));
     updateElement({ value: ensurePadding(toBytes(formatDate(date, vr))), element, context });
@@ -51,7 +51,7 @@ export const dCleanFunction: CleaningFunction = (element, context) => {
   const { dataset, dummies } = context;
 
   if (vr === 'SQ') {
-    deleteElement(dataset, tag);
+    deleteElement(dataset, tag, context);
   } else if (isTemporalVr(vr)) {
     updateElement({ value: ensurePadding(toBytes(formatDate(new Date(0), vr))), element, context });
   } else if (isStringVr(vr) && isIntegerVr(vr)) {
@@ -86,7 +86,7 @@ export const kCleanFunction: CleaningFunction = (element, context) => {
   const { dataset } = context;
 
   if (vr === 'SQ') {
-    deleteElement(dataset, tag);
+    deleteElement(dataset, tag, context);
     return true;
   } else {
     return false;

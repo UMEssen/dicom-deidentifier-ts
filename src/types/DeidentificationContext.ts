@@ -4,6 +4,7 @@ import DeidentifyOptions from './DeidentifyOptions';
 type DeidentificationContext = {
   dataset: DicomDataset;
   isLittleEndian: boolean;
+  isImplicit: boolean;
 } & DeidentifyOptions;
 
 export default DeidentificationContext;
