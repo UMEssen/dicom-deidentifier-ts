@@ -17,12 +17,12 @@
   ],
   "license": "MIT",
   "private": true,
-  "main": "./dist/dicom-deidentifier.cjs.js",
-  "module": "./dist/dicom-deidentifier.es.js",
+  "main": "./dist/dicom-deidentifier.js",
+  "module": "./dist/dicom-deidentifier.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "tsc && vite build"
+    "build": "jest && tsc && vite build"
   },
   "dependencies": {
     "crypto-js": "^4.1.1",
