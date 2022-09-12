@@ -16,7 +16,7 @@
     "typescript"
   ],
   "license": "MIT",
-  "private": true,
+  "private": false,
   "main": "./dist/dicom-deidentifier.js",
   "module": "./dist/dicom-deidentifier.mjs",
   "types": "./dist/index.d.ts",
