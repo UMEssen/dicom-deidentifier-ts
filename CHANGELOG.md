@@ -1,21 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [0.4.0] - 2022-08-02
-### Added 
-- Changelog
-- New property `isImplicit` in `DeidentificationContext`
+## [1.0.0-beta.1] - 2022-09-12
+Please keep in mind that this library is still 
+### Added
+- Added `Tag.forName(string)` to resolve tag names (e.g. "PatientName" => 00100010).
+- New tests for Deidentifier tag matchers
 
 ### Changed
-- Automatically detect transfer syntaxes with implicit VRs and use VR lookup table by default.
-- `deleteElement` requires `DeidentificationContext` now
-- Updated dependencies
+- Moved to `dcmjs` for data manipulation which should fix most issues with previous 0.x.x versions
 
-### Fixed
-- Wrong value length for transfer syntaxes with implicit VRs
+### Removed
+- Removed methods related to byte array manipulation. Use the `DataElement#setValue` method instead.
 
-[0.4.0]: https://github.com/UMEssen/dicom-deidentifier-ts
-[Unreleased]: https://github.com/UMEssen/dicom-deidentifier-ts/tree/master
+[1.0.0-beta.1]: https://github.com/UMEssen/dicom-deidentifier-ts

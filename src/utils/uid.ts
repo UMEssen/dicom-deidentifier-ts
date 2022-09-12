@@ -1,5 +1,23 @@
-import { MD5 } from 'crypto-js';
-import { hexToDecimal, toHexString } from './converters';
+import md5 from 'crypto-js/md5';
+
+const toHexString = (bytes: Int8Array): string => {
+  let hexPrefix = '0x';
+  const hexString = Array.from(bytes)
+    .map((byte) => ('0' + (byte & 0xff).toString(16)).slice(-2))
+    .join('');
+  return hexPrefix + hexString;
+};
+
+const hexToDecimal = (hexString: string): string => {
+  let hex = hexString;
+
+  if (hex.length % 2) {
+    hex = `0${hex}`;
+  }
+
+  const bigInt = BigInt(hex);
+  return bigInt.toString(10);
+};
 
 const UID_ROOT = '2.25';
 
@@ -10,6 +28,7 @@ const unpackMd5Words = (bytes32: number[]): number[] => {
   }
   const bytes = [];
   for (let i = 0; i < 16; i++) {
+    // @ts-ignore
     bytes.push(view.getUint8(i) - 256);
   }
   return bytes;
@@ -17,7 +36,7 @@ const unpackMd5Words = (bytes32: number[]): number[] => {
 
 export const toUid = (value: string) => {
   const b17 = new Int8Array(17);
-  const words8bit = unpackMd5Words(MD5(value).words);
+  const words8bit = unpackMd5Words(md5(value).words);
   const mostSignificant = words8bit.slice(0, 8);
   const leastSignificant = words8bit.slice(8, 16);
 

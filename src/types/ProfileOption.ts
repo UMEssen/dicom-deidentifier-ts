@@ -1,6 +1,6 @@
-import ActionCode from './ActionCode';
-import DeidentificationMatcher from '../types/DeidentificationMatcher';
+import type { Deidentifier } from '../deidentifiers';
+import type ActionCode from './ActionCode';
 
-type ProfileOption = (matcher: DeidentificationMatcher) => ActionCode | null;
+type ProfileOption = (deidentifier: Deidentifier) => ActionCode | null;
 
 export default ProfileOption;
