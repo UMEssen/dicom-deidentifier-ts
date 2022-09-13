@@ -1,6 +1,6 @@
 {
   "name": "@umessen/dicom-deidentifier",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "DICOM de-identification library for TypeScript",
   "author": "Nicolas Kamzol <nicolas.kamzol@uk-essen.de>",
   "repository": {
@@ -17,6 +17,7 @@
   ],
   "license": "MIT",
   "private": false,
+  "files": ["./dist"],
   "main": "./dist/dicom-deidentifier.js",
   "module": "./dist/dicom-deidentifier.mjs",
   "types": "./dist/index.d.ts",
