@@ -49,7 +49,7 @@ new Deidentifier({
         // Return true to skip the default deidentification logic and any futher special handlers for this element.
         return true;
       } else {
-        // Return false if you want to further special handlers, including the default deidentification logic.
+        // Return false if you want to run further special handlers, including the default deidentification logic.
         return false;
       }
     },
